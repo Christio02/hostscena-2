@@ -1,53 +1,41 @@
-import "./globals.css";
+import Footer from '@/components/layout/footer/Footer'
+import LayoutPadding from '@/components/layout/layoutPadding/layoutPadding'
+import NavbarWrapper from '@/components/layout/navbar/NavbarWrapper'
+import { DisableDraftMode } from '@/components/sanitylive/DisableDraftMode'
+import { SanityLive } from '@/sanity/lib/live'
+import { VisualEditing } from 'next-sanity'
+import { Source_Sans_3, Wittgenstein } from 'next/font/google'
+import { draftMode } from 'next/headers'
+import '../styles/globals.css'
 
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { draftMode } from "next/headers";
-import { VisualEditing, toPlainText } from "next-sanity";
-import { Toaster } from "sonner";
+const sourceSans = Source_Sans_3({
+  subsets: ['latin'],
+  variable: '--font-source',
+  weight: ['300', '400', '500', '600', '700'],
+})
 
-import DraftModeToast from "@/app/components/DraftModeToast";
-import Footer from "@/app/components/Footer";
-import * as demo from "@/sanity/lib/demo";
-import { sanityFetch, SanityLive } from "@/sanity/lib/live";
-import { settingsQuery } from "@/sanity/lib/queries";
-import { handleError } from "./client-utils";
-
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { isEnabled: isDraftMode } = await draftMode();
-
+const wittgenstein = Wittgenstein({
+  subsets: ['latin'],
+  variable: '--font-wittgenstein',
+  weight: ['400', '500', '600', '700', '800', '900'],
+})
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} bg-white text-black`}>
+    <html lang="no" className={`${sourceSans.variable} ${wittgenstein.variable}`}>
       <body>
-        <section className="min-h-screen pt-24">
-          {/* The <Toaster> component is responsible for rendering toast notifications used in /app/client-utils.ts and /app/components/DraftModeToast.tsx */}
-          <Toaster />
-          {isDraftMode && (
-            <>
-              <DraftModeToast />
-              {/*  Enable Visual Editing, only to be rendered when Draft Mode is enabled */}
-              <VisualEditing />
-            </>
-          )}
-          {/* The <SanityLive> component is responsible for making all sanityFetch calls in your application live, so should always be rendered. */}
-          <SanityLive onError={handleError} />
-          <main className="">{children}</main>
-          <Footer />
-        </section>
-        <SpeedInsights />
+        <NavbarWrapper />
+        <LayoutPadding />
+        <main>{children}</main>
+        <Footer />
+
+        <SanityLive />
+        {(await draftMode()).isEnabled && (
+          <>
+            <DisableDraftMode />
+            <VisualEditing />
+          </>
+        )}
       </body>
     </html>
-  );
+  )
 }

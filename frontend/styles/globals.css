@@ -1,0 +1,218 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --swiper-wrapper-transition-timing-function: linear !important;
+  --marquee-translate: -50px;
+
+  --font-wittgenstein: 'Wittgenstein', serif;
+  --font-source: 'Source Sans 3', serif;
+
+  --color-primary: #ffffff;
+  --color-secondary: #000000;
+
+  /* Typografi fra Figma */
+  --logo-h1: 3.563rem; /* 57px */
+  --logo-h2: 2.688rem; /* 43px */
+
+  --h1: 3rem; /* 48px */
+  --h2: 3.25rem; /* 52px */
+  --h2-mobile: 2.5rem; /* 40px */
+  --h3: 1.875rem; /* 30px */
+  --h4: 1.75rem; /* 28px */
+  --h5: 1.625rem; /* 26px */
+  --h6: 1.125rem; /* 18px */
+  --h6-mobile: 1rem; /* 16px */
+
+  --body: 1.125rem; /* 18px */
+  --s: 1.125rem; /* 18px */
+  --caption: 1.125rem; /* 18px */
+  --tiny: 0.875rem; /* 14px */
+  --2s: 1rem; /* 16px */
+
+  --calendar-title: 1.25rem; /* 20px */
+  --calendar-time: 1rem; /* 16px */
+
+  --title-s: 1.4375rem; /* 23px */
+  --tag: 1.125rem; /* 16px */
+
+  --button: 2rem; /* 32px */
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-black text-body;
+  }
+
+  /* Typography */
+  .text-logo-h1 {
+    font-family: var(--font-wittgenstein), serif;
+    font-size: var(--logo-h1);
+    text-transform: uppercase;
+  }
+
+  .text-logo-h2 {
+    font-family: var(--font-wittgenstein), serif;
+    font-size: var(--logo-h2);
+    text-transform: uppercase;
+  }
+
+  .text-h1 {
+    font-family: var(--font-wittgenstein), serif;
+    font-size: var(--h1);
+  }
+
+  .text-h2 {
+    font-family: var(--font-wittgenstein), serif;
+    font-size: var(--h2);
+  }
+
+  .text-h3 {
+    font-family: var(--font-wittgenstein), serif;
+    font-size: var(--h3);
+  }
+
+  .text-h4 {
+    font-family: var(--font-wittgenstein), serif;
+    font-size: var(--h4);
+  }
+
+  .text-h5 {
+    font-family: var(--font-source), serif;
+    font-size: var(--h5);
+  }
+
+  .text-h6 {
+    font-family: var(--font-source), serif;
+    font-size: var(--h6);
+  }
+
+  .text-body {
+    font-family: var(--font-source), serif;
+    font-size: var(--body);
+  }
+
+  .text-undertekst {
+    font-family: var(--font-source), serif;
+    font-size: var(--body);
+    font-weight: lighter;
+  }
+
+  .text-caption,
+  .text-calendar-time {
+    font-family: var(--font-source), serif;
+    font-size: var(--caption);
+    font-weight: 300;
+  }
+
+  .text-s {
+    font-family: var(--font-source), serif;
+    font-size: var(--s);
+  }
+
+  .text-2s {
+    font-family: var(--font-source), serif;
+    font-size: var(--2s);
+  }
+
+  .text-tag {
+    font-family: var(--font-source), serif;
+    font-size: var(--tag);
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  .text-calendar-title {
+    font-family: var(--font-wittgenstein), serif;
+    font-size: var(--calendar-title);
+  }
+
+  .text-title-s {
+    font-family: var(--font-wittgenstein), serif;
+    font-size: var(--title-s);
+  }
+
+  .text-button {
+    font-family: var(--font-wittgenstein), serif;
+    font-size: var(--button);
+  }
+
+  @media (max-width: 989px) {
+    .text-h2 {
+      font-size: var(--h2-mobile);
+    }
+
+    .text-h6 {
+      font-size: var(--h6-mobile);
+    }
+
+    .text-button {
+      font-size: var(--h2-mobile);
+    }
+  }
+}
+
+@layer components {
+  .btn {
+    @apply border border-secondary bg-primary hover:bg-secondary hover:text-primary;
+  }
+
+  .parallax {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .bg-static {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .hover-lift {
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  @keyframes marquee-pingpong {
+    0%,
+    4% {
+      transform: translateX(0);
+    }
+    46%,
+    54% {
+      transform: translateX(var(--marquee-translate));
+    }
+    96%,
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  .animate-marquee {
+    animation: marquee-pingpong 10s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+}
+
+@layer utilities {
+  .font-source {
+    font-family: var(--font-source), serif;
+  }
+
+  .font-wittgenstein {
+    font-family: var(--font-wittgenstein), serif;
+  }
+}
