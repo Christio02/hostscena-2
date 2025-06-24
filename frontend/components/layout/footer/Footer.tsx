@@ -17,17 +17,17 @@ export default async function Footer() {
     <footer className="pt-[60px] px-[20px]">
       <div className="tablet:border-t border-secondary flex flex-col tablet:flex-row tablet:justify-between">
         {/* Kontakt */}
-        <div className="order-1 tablet:order-none tablet:pl-[20px] tablet:py-[30px] py-[20px] font-source flex gap-[20px] border-y border-secondary tablet:border-0">
+        <div className="order-1 tablet:order-0 tablet:pl-[20px] tablet:py-[30px] py-[20px] font-source flex gap-[20px] border-y border-secondary tablet:border-0">
           <div className="hidden tablet:block">
             <Image
               src={logo}
               alt="Logo"
               width={205}
               height={0}
-              className="h-full border-secondary border-[1px] px-[14.4px] py-[13.6px]"
+              className="h-full border-secondary border px-[14.4px] py-[13.6px]"
             />
           </div>
-          <div className="w-[1px] h-full bg-black hidden tablet:block" />
+          <div className="w-px h-full bg-black hidden tablet:block" />
           <div className="flex flex-col justify-center">
             <h2 className="text-h4">Kontakt:</h2>
             <p className="text-s">{email}</p>
@@ -53,13 +53,13 @@ export default async function Footer() {
         </div>
 
         {/* Logo + SoMe (Mobile) */}
-        <div className="order-3 tablet:order-none flex justify-between items-center gap-[20px] py-[20px] border-t border-secondary tablet:py-0 tablet:hidden">
+        <div className="order-3 tablet:order-0 flex justify-between items-center gap-[20px] py-[20px] border-t border-secondary tablet:py-0 tablet:hidden">
           <Image
             src={logo}
             alt="Logo"
             width={125}
             height={0}
-            className="border-secondary border-[1px] px-[8.77px] py-[8.29px]"
+            className="border-secondary border px-[8.77px] py-[8.29px]"
           />
           <div className="flex gap-[20px]">
             <SocialLinks links={socialLinks} size={48} />

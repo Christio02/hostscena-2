@@ -62,7 +62,7 @@ export default function ImageCarousel({ images = [], className = '' }: Props) {
             speed={8000}
           >
             {row.map((image, i) => (
-              <SwiperSlide key={i} className="!w-auto" style={{ height: `${IMAGE_HEIGHT}px` }}>
+              <SwiperSlide key={i} className="w-auto!" style={{ height: `${IMAGE_HEIGHT}px` }}>
                 <button onClick={() => openImage(image.asset.url)} className="p-0 border-none m-0">
                   <div style={{ height: `${IMAGE_HEIGHT}px`, width: 'auto' }} className="relative">
                     <Image

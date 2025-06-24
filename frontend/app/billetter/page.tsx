@@ -13,7 +13,7 @@ export default async function Billetter() {
         imageSrc="/assets/images/snake/Hostscena-bildeslange-bilde07.jpg"
         className="min-h-[300px] tablet:h-[calc(100vh-215px)] w-full"
         button={
-          <button className="btn font-wittgenstein max-w-[594px] text-nowrap text-h4 tablet:!text-[3.688rem] px-[20px] tablet:px-[26px] py-[10px] tablet:py-[13px]">
+          <button className="btn font-wittgenstein max-w-[594px] text-nowrap text-h4 tablet:text-[3.688rem]! px-[20px] tablet:px-[26px] py-[10px] tablet:py-[13px]">
             Kjøp festivalpass her
           </button>
         }

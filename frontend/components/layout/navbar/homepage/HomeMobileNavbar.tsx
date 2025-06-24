@@ -45,7 +45,7 @@ export default function HomeMobileNavbar() {
               <Link
                 key={href}
                 href={href}
-                className="w-full text-center border-[1px] border-secondary text-button hover:bg-secondary hover:text-primary"
+                className="w-full text-center border border-secondary text-button hover:bg-secondary hover:text-primary"
               >
                 {label}
               </Link>

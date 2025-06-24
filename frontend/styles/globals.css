@@ -12,8 +12,8 @@
   --font-sans: var(--font-source);
   --font-heading: var(--font-wittgenstein);
 
-  --color-primary: var(--color-primary);
-  --color-secondary: var(--color-secondary);
+  --color-primary: #ffffff;
+  --color-secondary: #000000;
 }
 
 /*
