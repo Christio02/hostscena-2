@@ -1,6 +1,6 @@
 {
   "name": "hostscena-2",
-  "description": "Next.js + Sanity: A Powerful Website Starter with Real-time Visual Editing",
+  "description": "Høstscena website made with NextJS + Sanity CMS",
   "scripts": {
     "dev": "npm-run-all --parallel dev:*",
     "dev:next": "npm run dev --workspace=frontend",
@@ -15,10 +15,6 @@
     "Live Content API (LCAPI)",
     "Real-time"
   ],
-  "bugs": {
-    "url": "https://github.com/sanity-io/sanity-template-nextjs-clean/issues"
-  },
-  "homepage": "https://github.com/sanity-io/sanity-template-nextjs-clean#readme",
   "workspaces": [
     "studio",
     "frontend"
