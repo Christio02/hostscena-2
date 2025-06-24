@@ -24,10 +24,6 @@ export default {
         primary: "var(--color-primary)",
         secondary: "var(--color-secondary)",
       },
-      fontSize: {
-        // custom body font size utility
-        body: "var(--body)",
-      },
     },
   },
   plugins: [typography],
