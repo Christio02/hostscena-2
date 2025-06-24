@@ -555,43 +555,510 @@ export type SanityAssetSourceData = {
 
 export type AllSanitySchemaTypes = Archive | ContactFooter | Tickets | Map | Home | ContactPersons | PortableText | Event | News | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
-// Source: ./sanity/lib/queries.ts
-// Variable: settingsQuery
-// Query: *[_type == "settings"][0]
-export type SettingsQueryResult = null;
-// Variable: getPageQuery
-// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {          link {      ...,        _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }      },      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,              _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }          }        }      },    },  }
-export type GetPageQueryResult = null;
-// Variable: sitemapData
-// Query: *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {    "slug": slug.current,    _type,    _updatedAt,  }
-export type SitemapDataResult = Array<never>;
-// Variable: allPostsQuery
-// Query: *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
-export type AllPostsQueryResult = Array<never>;
-// Variable: morePostsQuery
-// Query: *[_type == "post" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
-export type MorePostsQueryResult = Array<never>;
-// Variable: postQuery
-// Query: *[_type == "post" && slug.current == $slug] [0] {    content[]{    ...,    markDefs[]{      ...,        _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }    }  },      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
-export type PostQueryResult = null;
-// Variable: postPagesSlugs
-// Query: *[_type == "post" && defined(slug.current)]  {"slug": slug.current}
-export type PostPagesSlugsResult = Array<never>;
-// Variable: pagesSlugs
-// Query: *[_type == "page" && defined(slug.current)]  {"slug": slug.current}
-export type PagesSlugsResult = Array<never>;
+// Source: ./sanity/queries/archive.ts
+// Variable: ARCHIVE_QUERY
+// Query: *[_type == "archive"]{   _id,   archiveUrls[]{     year,     url   }  } | order(archiveUrls[0].year desc)
+export type ARCHIVE_QUERYResult = Array<{
+  _id: string;
+  archiveUrls: Array<{
+    year: string | null;
+    url: string | null;
+  }> | null;
+}>;
+
+// Source: ./sanity/queries/contactFooter.ts
+// Variable: SINGLE_CONTACT_FOOTER_QUERY
+// Query: *[_type == "contactFooter" && !(_id in path("drafts.**"))][0] {    _id,    _type,    email,    address,    postbox,    "socialLinks": coalesce(socialLinks, [])[]{      _key,      platform,      someUrl    }  }
+export type SINGLE_CONTACT_FOOTER_QUERYResult = {
+  _id: string;
+  _type: "contactFooter";
+  email: string | null;
+  address: string | null;
+  postbox: string | null;
+  socialLinks: Array<{
+    _key: string;
+    platform: "facebook" | "instagram" | "linkedin" | "tiktok" | "twitter" | "youtube" | null;
+    someUrl: string | null;
+  }> | Array<never>;
+} | null;
+// Variable: SOCIAL_LINKS
+// Query: *[_type == "contactFooter" && !(_id in path("drafts.**"))][0].socialLinks[] {      _key,      platform,      someUrl  }
+export type SOCIAL_LINKSResult = Array<{
+  _key: string;
+  platform: "facebook" | "instagram" | "linkedin" | "tiktok" | "twitter" | "youtube" | null;
+  someUrl: string | null;
+}> | null;
+
+// Source: ./sanity/queries/contactPersons.ts
+// Variable: CONTACT_PERSONS_QUERY
+// Query: *[_type == "contactPersons" && !(_id in path("drafts.**"))][0].persons[]{      _key,      namePerson,      position,      email,      phone  }
+export type CONTACT_PERSONS_QUERYResult = Array<{
+  _key: string;
+  namePerson: string | null;
+  position: string | null;
+  email: string | null;
+  phone: string | null;
+}> | null;
+
+// Source: ./sanity/queries/event.ts
+// Variable: EVENT_QUERY
+// Query: *[_type == "event" && !(_id in path("drafts.**"))] | order(date asc) {    _type,    title,    slug {      _id,      current    },      image {      asset->{        _id,        url,        metadata {          dimensions,          lqip        }      },      hotspot,      crop    },    date,    startTime,    endTime,    location,    link,    tag,    content[]{      ...,      markDefs[]{        ...,        _type == "internalLink" => {          "reference": @.reference->{            _id,            _type,            slug          }        }      }    },    credits[]{      ...,      markDefs[]{        ...,        _type == "internalLink" => {          "reference": @.reference->{            _id,            _type,            slug          }        }      }    },    sponsor,    contributors[] {      _key,      name,      artistType,      bio,      image {        asset->{          _id,          url,          metadata {            dimensions,            lqip          }        },        hotspot,        crop      }    },    video {      videoType,      youtubeUrl,      videoFile {        asset->{          _id,          url,          originalFilename,          mimeType        }      }    },    spotifyLink,    imageCarousel[] {      _key,      caption,      alt,      image {        asset->{          _id,          url,          metadata {            dimensions,            lqip          }        },        hotspot,        crop      }    }  }
+export type EVENT_QUERYResult = Array<{
+  _type: "event";
+  title: string | null;
+  slug: {
+    _id: null;
+    current: string | null;
+  } | null;
+  image: {
+    asset: {
+      _id: string;
+      url: string | null;
+      metadata: {
+        dimensions: SanityImageDimensions | null;
+        lqip: string | null;
+      } | null;
+    } | null;
+    hotspot: SanityImageHotspot | null;
+    crop: SanityImageCrop | null;
+  } | null;
+  date: string | null;
+  startTime: string | null;
+  endTime: string | null;
+  location: string | null;
+  link: string | null;
+  tag: string | null;
+  content: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs: Array<{
+      reference: {
+        _id: string;
+        _type: "event";
+        slug: Slug | null;
+      } | {
+        _id: string;
+        _type: "news";
+        slug: Slug | null;
+      } | null;
+      _type: "internalLink";
+      _key: string;
+    } | {
+      href?: string;
+      blank?: boolean;
+      _type: "link";
+      _key: string;
+    }> | null;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }> | null;
+  credits: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs: Array<{
+      reference: {
+        _id: string;
+        _type: "event";
+        slug: Slug | null;
+      } | {
+        _id: string;
+        _type: "news";
+        slug: Slug | null;
+      } | null;
+      _type: "internalLink";
+      _key: string;
+    } | {
+      href?: string;
+      blank?: boolean;
+      _type: "link";
+      _key: string;
+    }> | null;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }> | null;
+  sponsor: string | null;
+  contributors: Array<{
+    _key: string;
+    name: string | null;
+    artistType: string | null;
+    bio: string | null;
+    image: {
+      asset: {
+        _id: string;
+        url: string | null;
+        metadata: {
+          dimensions: SanityImageDimensions | null;
+          lqip: string | null;
+        } | null;
+      } | null;
+      hotspot: SanityImageHotspot | null;
+      crop: SanityImageCrop | null;
+    } | null;
+  }> | null;
+  video: {
+    videoType: "upload" | "youtube" | null;
+    youtubeUrl: string | null;
+    videoFile: {
+      asset: {
+        _id: string;
+        url: string | null;
+        originalFilename: string | null;
+        mimeType: string | null;
+      } | null;
+    } | null;
+  } | null;
+  spotifyLink: string | null;
+  imageCarousel: Array<{
+    _key: string;
+    caption: string | null;
+    alt: string | null;
+    image: {
+      asset: {
+        _id: string;
+        url: string | null;
+        metadata: {
+          dimensions: SanityImageDimensions | null;
+          lqip: string | null;
+        } | null;
+      } | null;
+      hotspot: SanityImageHotspot | null;
+      crop: SanityImageCrop | null;
+    } | null;
+  }> | null;
+}>;
+// Variable: UPCOMING_EVENTS_QUERY
+// Query: *[_type == "event" && date >= now() && !(_id in path("drafts.**"))] | order(date asc) {     _id,    _type,    title,    date,    startTime,    endTime,    location,    link,    tag,    image {      asset->{        _id,        url,        metadata {          dimensions,          lqip        }      },      hotspot,      crop    },    content[]{      ...,      markDefs[]{        ...,        _type == "internalLink" => {          "reference": @.reference->{            _id,            _type,            slug          }        }      }    },    credits[]{      ...,      markDefs[]{        ...,        _type == "internalLink" => {          "reference": @.reference->{            _id,            _type,            slug          }        }      }    },    sponsor,    contributors[] {      _key,      name,      artistType,      bio,      image {        asset->{          _id,          url,          metadata {            dimensions,            lqip          }        },        hotspot,        crop      }    },    video {      title,      videoType,      youtubeUrl,      videoFile {        asset->{          _id,          url,          originalFilename,          mimeType        }      }    },    spotifyLink,    imageCarousel[] {      _key,      caption,      alt,      image {        asset->{          _id,          url,          metadata {            dimensions,            lqip          }        },        hotspot,        crop      }    }  }
+export type UPCOMING_EVENTS_QUERYResult = Array<{
+  _id: string;
+  _type: "event";
+  title: string | null;
+  date: string | null;
+  startTime: string | null;
+  endTime: string | null;
+  location: string | null;
+  link: string | null;
+  tag: string | null;
+  image: {
+    asset: {
+      _id: string;
+      url: string | null;
+      metadata: {
+        dimensions: SanityImageDimensions | null;
+        lqip: string | null;
+      } | null;
+    } | null;
+    hotspot: SanityImageHotspot | null;
+    crop: SanityImageCrop | null;
+  } | null;
+  content: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs: Array<{
+      reference: {
+        _id: string;
+        _type: "event";
+        slug: Slug | null;
+      } | {
+        _id: string;
+        _type: "news";
+        slug: Slug | null;
+      } | null;
+      _type: "internalLink";
+      _key: string;
+    } | {
+      href?: string;
+      blank?: boolean;
+      _type: "link";
+      _key: string;
+    }> | null;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }> | null;
+  credits: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs: Array<{
+      reference: {
+        _id: string;
+        _type: "event";
+        slug: Slug | null;
+      } | {
+        _id: string;
+        _type: "news";
+        slug: Slug | null;
+      } | null;
+      _type: "internalLink";
+      _key: string;
+    } | {
+      href?: string;
+      blank?: boolean;
+      _type: "link";
+      _key: string;
+    }> | null;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }> | null;
+  sponsor: string | null;
+  contributors: Array<{
+    _key: string;
+    name: string | null;
+    artistType: string | null;
+    bio: string | null;
+    image: {
+      asset: {
+        _id: string;
+        url: string | null;
+        metadata: {
+          dimensions: SanityImageDimensions | null;
+          lqip: string | null;
+        } | null;
+      } | null;
+      hotspot: SanityImageHotspot | null;
+      crop: SanityImageCrop | null;
+    } | null;
+  }> | null;
+  video: {
+    title: null;
+    videoType: "upload" | "youtube" | null;
+    youtubeUrl: string | null;
+    videoFile: {
+      asset: {
+        _id: string;
+        url: string | null;
+        originalFilename: string | null;
+        mimeType: string | null;
+      } | null;
+    } | null;
+  } | null;
+  spotifyLink: string | null;
+  imageCarousel: Array<{
+    _key: string;
+    caption: string | null;
+    alt: string | null;
+    image: {
+      asset: {
+        _id: string;
+        url: string | null;
+        metadata: {
+          dimensions: SanityImageDimensions | null;
+          lqip: string | null;
+        } | null;
+      } | null;
+      hotspot: SanityImageHotspot | null;
+      crop: SanityImageCrop | null;
+    } | null;
+  }> | null;
+}>;
+
+// Source: ./sanity/queries/home.ts
+// Variable: SINGLE_HOME_QUERY
+// Query: *[_type == "home" && !(_id in path("drafts.**"))][0] {    _id,    _type,    startDate,    endDate,    imageGallery[] {      _key,      alt,      asset->{        _id,        url,        metadata {          dimensions,          lqip        }      },      hotspot,      crop    },    backgroundVideo {      asset->{        _id,        url,        originalFilename,        mimeType,        size      }    }  }
+export type SINGLE_HOME_QUERYResult = {
+  _id: string;
+  _type: "home";
+  startDate: string | null;
+  endDate: string | null;
+  imageGallery: Array<{
+    _key: string;
+    alt: string | null;
+    asset: {
+      _id: string;
+      url: string | null;
+      metadata: {
+        dimensions: SanityImageDimensions | null;
+        lqip: string | null;
+      } | null;
+    } | null;
+    hotspot: SanityImageHotspot | null;
+    crop: SanityImageCrop | null;
+  }> | null;
+  backgroundVideo: {
+    asset: {
+      _id: string;
+      url: string | null;
+      originalFilename: string | null;
+      mimeType: string | null;
+      size: number | null;
+    } | null;
+  } | null;
+} | null;
+// Variable: HOME_HEADER_QUERY
+// Query: *[_type == "home" && !(_id in path("drafts.**"))][0] {  startDate,  endDate,  location  }
+export type HOME_HEADER_QUERYResult = {
+  startDate: string | null;
+  endDate: string | null;
+  location: null;
+} | null;
+// Variable: IMAGE_SNAKE_QUERY
+// Query: *[_type == "home" && !(_id in path("drafts.**"))][0].imageGallery[] {    _key,    alt,    asset->{      _id,      url,      metadata {        dimensions,        lqip      }    },    hotspot,    crop  }
+export type IMAGE_SNAKE_QUERYResult = Array<{
+  _key: string;
+  alt: string | null;
+  asset: {
+    _id: string;
+    url: string | null;
+    metadata: {
+      dimensions: SanityImageDimensions | null;
+      lqip: string | null;
+    } | null;
+  } | null;
+  hotspot: SanityImageHotspot | null;
+  crop: SanityImageCrop | null;
+}> | null;
+// Variable: BACKGROUND_VIDEO_QUERY
+// Query: *[_type == "home" && !(_id in path("drafts.**"))][0].backgroundVideo {    asset->{      _id,      url,      originalFilename,      mimeType,      size    }  }
+export type BACKGROUND_VIDEO_QUERYResult = {
+  asset: {
+    _id: string;
+    url: string | null;
+    originalFilename: string | null;
+    mimeType: string | null;
+    size: number | null;
+  } | null;
+} | null;
+
+// Source: ./sanity/queries/map.ts
+// Variable: SINGLE_MAP_QUERY
+// Query: *[_type == "map" && !(_id in path("drafts.**"))][0] {    _id,    _type,    mapUrl,  }
+export type SINGLE_MAP_QUERYResult = {
+  _id: string;
+  _type: "map";
+  mapUrl: string | null;
+} | null;
+
+// Source: ./sanity/queries/news.ts
+// Variable: NEWS_DETAIL_QUERY
+// Query: *[_type == "news" && slug.current == $slug && !(_id in path("drafts.**"))][0]{    _id,    title,    slug,    tag,    person,    date,    image {      asset->{        _id,        url,        metadata {          dimensions,          lqip        }      },      hotspot,      crop    },    image,    content  }
+export type NEWS_DETAIL_QUERYResult = {
+  _id: string;
+  title: string | null;
+  slug: Slug | null;
+  tag: string | null;
+  person: string | null;
+  date: string | null;
+  image: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  content: PortableText | null;
+} | null;
+// Variable: ALL_NEWS_QUERY
+// Query: *[_type == "news" && defined(slug.current) && !(_id in path("drafts.**"))]    | order(date desc){      _id,      title,      slug,      tag,      person,      date,      time,      image {      asset->{        _id,        url,        metadata {          dimensions,          lqip        }      },      hotspot,      crop    },      content    }
+export type ALL_NEWS_QUERYResult = Array<{
+  _id: string;
+  title: string | null;
+  slug: Slug | null;
+  tag: string | null;
+  person: string | null;
+  date: string | null;
+  time: string | null;
+  image: {
+    asset: {
+      _id: string;
+      url: string | null;
+      metadata: {
+        dimensions: SanityImageDimensions | null;
+        lqip: string | null;
+      } | null;
+    } | null;
+    hotspot: SanityImageHotspot | null;
+    crop: SanityImageCrop | null;
+  } | null;
+  content: PortableText | null;
+}>;
+
+// Source: ./sanity/queries/tickets.ts
+// Variable: TICKETS_QUERY
+// Query: *[_type == "tickets" && !(_id in path("drafts.**"))][0] {    _id,    _type,    section[]{      ...,      markDefs[]{        ...,        _type == "internalLink" => {          "reference": @.reference->{            _id,            _type,            slug          }        }      }    }  }
+export type TICKETS_QUERYResult = {
+  _id: string;
+  _type: "tickets";
+  section: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs: Array<{
+      reference: {
+        _id: string;
+        _type: "event";
+        slug: Slug | null;
+      } | {
+        _id: string;
+        _type: "news";
+        slug: Slug | null;
+      } | null;
+      _type: "internalLink";
+      _key: string;
+    } | {
+      href?: string;
+      blank?: boolean;
+      _type: "link";
+      _key: string;
+    }> | null;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }> | null;
+} | null;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "*[_type == \"settings\"][0]": SettingsQueryResult;
-    "\n  *[_type == 'page' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    \"pageBuilder\": pageBuilder[]{\n      ...,\n      _type == \"callToAction\" => {\n        \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"post\": post->slug.current\n  }\n\n      }\n,\n      },\n      _type == \"infoSection\" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"post\": post->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n": GetPageQueryResult;
-    "\n  *[_type == \"page\" || _type == \"post\" && defined(slug.current)] | order(_type asc) {\n    \"slug\": slug.current,\n    _type,\n    _updatedAt,\n  }\n": SitemapDataResult;
-    "\n  *[_type == \"post\" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    \n  _id,\n  \"status\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  coverImage,\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{firstName, lastName, picture},\n\n  }\n": AllPostsQueryResult;
-    "\n  *[_type == \"post\" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {\n    \n  _id,\n  \"status\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  coverImage,\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{firstName, lastName, picture},\n\n  }\n": MorePostsQueryResult;
-    "\n  *[_type == \"post\" && slug.current == $slug] [0] {\n    content[]{\n    ...,\n    markDefs[]{\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"post\": post->slug.current\n  }\n\n    }\n  },\n    \n  _id,\n  \"status\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  coverImage,\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{firstName, lastName, picture},\n\n  }\n": PostQueryResult;
-    "\n  *[_type == \"post\" && defined(slug.current)]\n  {\"slug\": slug.current}\n": PostPagesSlugsResult;
-    "\n  *[_type == \"page\" && defined(slug.current)]\n  {\"slug\": slug.current}\n": PagesSlugsResult;
+    "\n  *[_type == \"archive\"]{\n   _id,\n   archiveUrls[]{\n     year,\n     url\n   }\n  } | order(archiveUrls[0].year desc)\n": ARCHIVE_QUERYResult;
+    "\n  *[_type == \"contactFooter\" && !(_id in path(\"drafts.**\"))][0] {\n    _id,\n    _type,\n    email,\n    address,\n    postbox,\n    \"socialLinks\": coalesce(socialLinks, [])[]{\n      _key,\n      platform,\n      someUrl\n    }\n  } \n": SINGLE_CONTACT_FOOTER_QUERYResult;
+    "\n  *[_type == \"contactFooter\" && !(_id in path(\"drafts.**\"))][0].socialLinks[] {\n      _key,\n      platform,\n      someUrl\n  }\n": SOCIAL_LINKSResult;
+    "  *[_type == \"contactPersons\" && !(_id in path(\"drafts.**\"))][0].persons[]{\n      _key,\n      namePerson,\n      position,\n      email,\n      phone\n  }": CONTACT_PERSONS_QUERYResult;
+    "\n  *[_type == \"event\" && !(_id in path(\"drafts.**\"))] | order(date asc) {\n    _type,\n    title,\n    slug {\n      _id,\n      current\n    },\n      image {\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions,\n          lqip\n        }\n      },\n      hotspot,\n      crop\n    },\n    date,\n    startTime,\n    endTime,\n    location,\n    link,\n    tag,\n    content[]{\n      ...,\n      markDefs[]{\n        ...,\n        _type == \"internalLink\" => {\n          \"reference\": @.reference->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    },\n    credits[]{\n      ...,\n      markDefs[]{\n        ...,\n        _type == \"internalLink\" => {\n          \"reference\": @.reference->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    },\n    sponsor,\n    contributors[] {\n      _key,\n      name,\n      artistType,\n      bio,\n      image {\n        asset->{\n          _id,\n          url,\n          metadata {\n            dimensions,\n            lqip\n          }\n        },\n        hotspot,\n        crop\n      }\n    },\n    video {\n      videoType,\n      youtubeUrl,\n      videoFile {\n        asset->{\n          _id,\n          url,\n          originalFilename,\n          mimeType\n        }\n      }\n    },\n    spotifyLink,\n    imageCarousel[] {\n      _key,\n      caption,\n      alt,\n      image {\n        asset->{\n          _id,\n          url,\n          metadata {\n            dimensions,\n            lqip\n          }\n        },\n        hotspot,\n        crop\n      }\n    }\n  }\n": EVENT_QUERYResult;
+    "\n  *[_type == \"event\" && date >= now() && !(_id in path(\"drafts.**\"))] | order(date asc) {\n     _id,\n    _type,\n    title,\n    date,\n    startTime,\n    endTime,\n    location,\n    link,\n    tag,\n    image {\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions,\n          lqip\n        }\n      },\n      hotspot,\n      crop\n    },\n    content[]{\n      ...,\n      markDefs[]{\n        ...,\n        _type == \"internalLink\" => {\n          \"reference\": @.reference->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    },\n    credits[]{\n      ...,\n      markDefs[]{\n        ...,\n        _type == \"internalLink\" => {\n          \"reference\": @.reference->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    },\n    sponsor,\n    contributors[] {\n      _key,\n      name,\n      artistType,\n      bio,\n      image {\n        asset->{\n          _id,\n          url,\n          metadata {\n            dimensions,\n            lqip\n          }\n        },\n        hotspot,\n        crop\n      }\n    },\n    video {\n      title,\n      videoType,\n      youtubeUrl,\n      videoFile {\n        asset->{\n          _id,\n          url,\n          originalFilename,\n          mimeType\n        }\n      }\n    },\n    spotifyLink,\n    imageCarousel[] {\n      _key,\n      caption,\n      alt,\n      image {\n        asset->{\n          _id,\n          url,\n          metadata {\n            dimensions,\n            lqip\n          }\n        },\n        hotspot,\n        crop\n      }\n    }\n  }\n": UPCOMING_EVENTS_QUERYResult;
+    "\n  *[_type == \"home\" && !(_id in path(\"drafts.**\"))][0] {\n    _id,\n    _type,\n    startDate,\n    endDate,\n    imageGallery[] {\n      _key,\n      alt,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions,\n          lqip\n        }\n      },\n      hotspot,\n      crop\n    },\n    backgroundVideo {\n      asset->{\n        _id,\n        url,\n        originalFilename,\n        mimeType,\n        size\n      }\n    }\n  }\n": SINGLE_HOME_QUERYResult;
+    "\n  *[_type == \"home\" && !(_id in path(\"drafts.**\"))][0] {\n  startDate,\n  endDate,\n  location\n  }\n": HOME_HEADER_QUERYResult;
+    "\n  *[_type == \"home\" && !(_id in path(\"drafts.**\"))][0].imageGallery[] {\n    _key,\n    alt,\n    asset->{\n      _id,\n      url,\n      metadata {\n        dimensions,\n        lqip\n      }\n    },\n    hotspot,\n    crop\n  }\n": IMAGE_SNAKE_QUERYResult;
+    "\n  *[_type == \"home\" && !(_id in path(\"drafts.**\"))][0].backgroundVideo {\n    asset->{\n      _id,\n      url,\n      originalFilename,\n      mimeType,\n      size\n    }\n  }\n": BACKGROUND_VIDEO_QUERYResult;
+    "\n  *[_type == \"map\" && !(_id in path(\"drafts.**\"))][0] {\n    _id,\n    _type,\n    mapUrl,\n  }\n": SINGLE_MAP_QUERYResult;
+    "\n  *[_type == \"news\" && slug.current == $slug && !(_id in path(\"drafts.**\"))][0]{\n    _id,\n    title,\n    slug,\n    tag,\n    person,\n    date,\n    image {\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions,\n          lqip\n        }\n      },\n      hotspot,\n      crop\n    },\n    image,\n    content\n  }\n": NEWS_DETAIL_QUERYResult;
+    "\n  *[_type == \"news\" && defined(slug.current) && !(_id in path(\"drafts.**\"))]\n    | order(date desc){\n      _id,\n      title,\n      slug,\n      tag,\n      person,\n      date,\n      time,\n      image {\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions,\n          lqip\n        }\n      },\n      hotspot,\n      crop\n    },\n      content\n    }\n": ALL_NEWS_QUERYResult;
+    "\n  *[_type == \"tickets\" && !(_id in path(\"drafts.**\"))][0] {\n    _id,\n    _type,\n    section[]{\n      ...,\n      markDefs[]{\n        ...,\n        _type == \"internalLink\" => {\n          \"reference\": @.reference->{\n            _id,\n            _type,\n            slug\n          }\n        }\n      }\n    }\n  }\n": TICKETS_QUERYResult;
   }
 }
