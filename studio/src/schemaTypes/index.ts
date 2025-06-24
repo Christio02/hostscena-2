@@ -1,24 +1,22 @@
-import {person} from './documents/person'
-import {page} from './documents/page'
-import {post} from './documents/post'
-import {callToAction} from './objects/callToAction'
-import {infoSection} from './objects/infoSection'
-import {settings} from './singletons/settings'
-import {link} from './objects/link'
-import {blockContent} from './objects/blockContent'
+import contactPersons from './documents/contactPersons'
+import event from './documents/event'
+import home from './documents/home'
+import map from './documents/map'
 
-// Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
+import news from './documents/news'
+import portableText from './documents/portableText'
+import tickets from './documents/tickets'
+import contactFooter from './documents/contactFooter'
+import archive from './documents/archive'
 
 export const schemaTypes = [
-  // Singletons
-  settings,
-  // Documents
-  page,
-  post,
-  person,
-  // Objects
-  blockContent,
-  infoSection,
-  callToAction,
-  link,
+  portableText,
+  event,
+  news,
+  contactPersons,
+  home,
+  map,
+  tickets,
+  contactFooter,
+  archive,
 ]
