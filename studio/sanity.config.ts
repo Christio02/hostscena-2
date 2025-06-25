@@ -24,7 +24,6 @@ const dataset = process.env.SANITY_STUDIO_DATASET || 'production'
 const SANITY_STUDIO_PREVIEW_URL = process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000'
 
 
-// Main Sanity configuration
 export default defineConfig({
   name: 'default',
   title: 'Høstscena',
