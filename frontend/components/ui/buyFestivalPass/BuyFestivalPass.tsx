@@ -1,11 +1,10 @@
 import Image from 'next/image'
-import { ReactNode } from 'react'
-
+import React from 'react'
 interface BackgroundBoxesProps {
   imageSrc: string
   className?: string
-  button: ReactNode
-  content?: ReactNode
+  button: React.ReactNode
+  content?: React.ReactNode
 }
 
 export default function BuyFestivalPass({
