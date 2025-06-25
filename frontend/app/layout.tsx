@@ -7,6 +7,7 @@ import { VisualEditing } from 'next-sanity'
 import { Source_Sans_3, Wittgenstein } from 'next/font/google'
 import { draftMode } from 'next/headers'
 import '../styles/globals.css'
+import React from "react";
 
 const sourceSans = Source_Sans_3({
   subsets: ['latin'],
@@ -27,12 +28,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <LayoutPadding />
         <main>{children}</main>
         <Footer />
-
         <SanityLive />
         {(await draftMode()).isEnabled && (
           <>
-            <DisableDraftMode />
             <VisualEditing />
+            <DisableDraftMode />
           </>
         )}
       </body>
