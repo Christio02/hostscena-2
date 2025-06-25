@@ -14,7 +14,10 @@ export const client = createClient({
     studioUrl,
     filter: (source) => {
       // check if the field is startDate or endDate
-      if (source.sourcePath.includes('startDate') || source.sourcePath.includes('endDate')) {
+      if (
+        source.sourcePath.includes("startDate") ||
+        source.sourcePath.includes("endDate")
+      ) {
         // encode this field as stega
         return true;
       }
