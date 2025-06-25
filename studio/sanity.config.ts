@@ -2,27 +2,26 @@
  * This config is used to configure your Sanity Studio.
  * Learn more: https://www.sanity.io/docs/configuration
  */
-import {defineConfig} from 'sanity'
-import {structureTool} from 'sanity/structure'
+import {assist} from '@sanity/assist'
 import {visionTool} from '@sanity/vision'
-import {schemaTypes} from './src/schemaTypes'
-import {structure} from './src/structure'
+import {defineConfig} from 'sanity'
 import {unsplashImageAsset} from 'sanity-plugin-asset-source-unsplash'
 import {
-  presentationTool,
   defineDocuments,
   defineLocations,
+  presentationTool,
   type DocumentLocation,
 } from 'sanity/presentation'
-import {assist} from '@sanity/assist'
+import {structureTool} from 'sanity/structure'
 import {resolve} from './src/presentation/resolve'
+import {schemaTypes} from './src/schemaTypes'
+import {structure} from './src/structure'
 
 // Environment variables for project configuration
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID || 'o5icaqul'
 const dataset = process.env.SANITY_STUDIO_DATASET || 'production'
 
 const SANITY_STUDIO_PREVIEW_URL = process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000'
-
 
 
 // Main Sanity configuration
@@ -36,12 +35,12 @@ export default defineConfig({
     presentationTool({
       previewUrl: {
         origin: SANITY_STUDIO_PREVIEW_URL,
-        preview: "/",
+        preview: '/',
         previewMode: {
           enable: `/api/draft-mode/enable`,
         },
       },
-      resolve
+      resolve,
     }),
     structureTool({
       structure, // Custom studio structure configuration, imported from ./src/structure.ts
