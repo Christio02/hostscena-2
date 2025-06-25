@@ -3,7 +3,7 @@ import InfoContainer from '@/components/ui/info/InfoContainer'
 
 export default function Info() {
   return (
-    <section>
+    <section className="min-h-[65vh]">
       <BlackTitleBar title="Info" />
       <InfoContainer />
     </section>

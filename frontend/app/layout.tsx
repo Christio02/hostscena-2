@@ -3,11 +3,11 @@ import LayoutPadding from '@/components/layout/layoutPadding/layoutPadding'
 import NavbarWrapper from '@/components/layout/navbar/NavbarWrapper'
 import { DisableDraftMode } from '@/components/sanitylive/DisableDraftMode'
 import { SanityLive } from '@/sanity/lib/live'
+import { ModalInit } from '@/utils/modalInit'
 import { VisualEditing } from 'next-sanity'
 import { Source_Sans_3, Wittgenstein } from 'next/font/google'
 import { draftMode } from 'next/headers'
 import '../styles/globals.css'
-import React from "react";
 
 const sourceSans = Source_Sans_3({
   subsets: ['latin'],
@@ -20,19 +20,22 @@ const wittgenstein = Wittgenstein({
   variable: '--font-wittgenstein',
   weight: ['400', '500', '600', '700', '800', '900'],
 })
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="no" className={`${sourceSans.variable} ${wittgenstein.variable}`}>
+    <html lang="no" className={`${sourceSans.variable} ${wittgenstein.variable} bg-secondary`}>
       <body>
+        <ModalInit />
         <NavbarWrapper />
         <LayoutPadding />
         <main>{children}</main>
         <Footer />
+
         <SanityLive />
         {(await draftMode()).isEnabled && (
           <>
-            <VisualEditing />
             <DisableDraftMode />
+            <VisualEditing />
           </>
         )}
       </body>

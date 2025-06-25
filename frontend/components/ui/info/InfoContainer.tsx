@@ -5,8 +5,7 @@ import About from '@/components/layout/about/About'
 
 export default function InfoContainer() {
   const items = [
-    { title: 'Ankomst', content: <p>Informasjon om ankomst.</p> },
-    { title: 'Kart', content: <p>Her er kartet over området.</p> },
+    { title: 'Billetter', content: <p>Informasjon om billetter.</p> },
     { title: 'Lokaler', content: <LocationContainer /> },
     { title: 'Kontakt', content: <ContactBox /> },
     { title: 'Om Høstscena', content: <About /> },

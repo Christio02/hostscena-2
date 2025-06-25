@@ -1,16 +1,16 @@
 import HomeHeader from "@/components/layout/navbar/homepage/HomeHeader";
 import HomeMobileNavbar from "@/components/layout/navbar/homepage/HomeMobileNavbar";
 import HomeNavbar from "@/components/layout/navbar/homepage/HomeNavbar";
+import { CustomPortableText } from "@/components/shared/CustomPortableText";
 import BlackTitleBar from "@/components/ui/blackTitleBar/BlackTitleBar";
 import BuyFestivalPass from "@/components/ui/buyFestivalPass/BuyFestivalPass";
-import BuyFestivalPassHome from "@/components/ui/buyFestivalPass/BuyFestivalPassHome";
-import ImageCarousel from "@/components/ui/imageCarousel/ImageCarousel";
-import ImageSnake from "@/components/ui/imageSnake/ImageSnake";
+import BuyFestivalPassServer from "@/components/ui/buyFestivalPass/BuyFestivalPassServer";
+import Carousel from "@/components/ui/carousel/Carousel";
 import NewsGrid from "@/components/ui/news/NewsGrid";
 import WeekContainer from "@/components/ui/program/week/WeekContainer";
 import { HomeProps } from "@/interfaces/home";
-import { getEvents, getHome, getNews } from "@/lib/sanity-cache";
-import { buyTickets1, buyTickets2 } from "@/mockdata/text";
+import { Tickets } from "@/interfaces/tickets";
+import { getEvents, getHome, getNews, getTickets } from "@/lib/sanity-cache";
 
 export default async function Home() {
   const [events, home, news] = await Promise.all([
@@ -18,8 +18,10 @@ export default async function Home() {
     getHome(),
     getNews(),
   ]);
+  const ticketsData: Tickets | null = await getTickets();
 
   const homeData: HomeProps = {
+    ...home,
     startDate: home?.startDate || "Dato kommer",
     endDate: home?.endDate || "Dato kommer",
     imageGallery: home?.imageGallery || [],
@@ -28,12 +30,17 @@ export default async function Home() {
 
   return (
     <>
-      <HomeHeader
-        startDate={home?.startDate || "Dato kommer"}
-        endDate={home?.endDate || "Dato kommer"}
-      />{" "}
-      <ImageCarousel className="block tablet:hidden" />
-      <ImageSnake images={homeData.imageGallery ?? []} />
+      <HomeHeader startDate={homeData.startDate} endDate={homeData.endDate} />
+      <div className="pt-[20px] tablet:py-[20px] space-y-[10px]">
+        <Carousel
+          images={homeData.imageGallery ?? []}
+          autoScrollDirection="backward"
+        />
+        <Carousel
+          images={homeData.imageGallery ?? []}
+          autoScrollDirection="forward"
+        />
+      </div>
       <HomeNavbar />
       <HomeMobileNavbar />
       <BlackTitleBar
@@ -48,29 +55,19 @@ export default async function Home() {
         linkText="mer info"
         linkUrl="/billetter"
       />
-      <BuyFestivalPassHome
-        imageSrc="/assets/images/snake/Hostscena-bildeslange-bilde07.jpg"
-        button={
-          <button className="btn font-wittgenstein text-nowrap text-[3.688rem] px-[26px] py-[13px]">
-            Kjøp festivalpass her
-          </button>
-        }
-      />
-      <BuyFestivalPass
-        imageSrc="/assets/images/snake/Hostscena-bildeslange-bilde07.jpg"
-        className="min-h-[300px] block tablet:hidden w-full"
-        button={
-          <button className="btn font-wittgenstein max-w-[594px] text-nowrap text-h4 tablet:text-[3.688rem]! px-[20px] tablet:px-[26px] py-[10px] tablet:py-[13px]">
-            Kjøp festivalpass her
-          </button>
-        }
-        content={
-          <div className="bg-white flex flex-col gap-[40px] p-[20px] font-source text-[1.188rem] tablet:max-w-[594px] tablet:border border-secondary">
-            <p>{buyTickets1}</p>
-            <p>{buyTickets2}</p>
-          </div>
-        }
-      />
+      <BuyFestivalPassServer />
+
+      <div className="block tablet:hidden">
+        <BuyFestivalPass
+          className=" min-h-[300px] tablet:h-[calc(100vh-215px)] w-full"
+          button={
+            <button className="btn font-wittgenstein max-w-[594px] text-nowrap text-h4 tablet:!text-[3.688rem] px-[20px] tablet:px-[26px] py-[10px] tablet:py-[13px]">
+              Kjøp festivalpass her
+            </button>
+          }
+          content={ticketsData?.section}
+        />
+      </div>
       <BlackTitleBar
         title="Nyheter"
         linkText="alle nyheter"

@@ -7,11 +7,15 @@ export default function About() {
     <div className="w-full">
       <section>
         <BorderTitleBar title={'Festivalteam'} noPadding={true} />
-        <PersonGrid persons={team} />
+        <div className="py-[20px]">
+          <PersonGrid persons={team} />
+        </div>
       </section>
       <section>
         <BorderTitleBar title={'Praktikanter'} noPadding={true} />
-        <PersonGrid persons={praktikanter} />
+        <div className="py-[20px]">
+          <PersonGrid persons={praktikanter} isIntern={true} />
+        </div>
       </section>
       <section>
         <BorderTitleBar title={'Styret 2025'} noPadding={true} />

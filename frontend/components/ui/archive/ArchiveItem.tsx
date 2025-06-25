@@ -1,15 +1,15 @@
-'use client'
-import { HiArrowLongRight } from 'react-icons/hi2'
+"use client";
+import { HiArrowLongRight } from "react-icons/hi2";
 
-interface Props {
-  title: string
-  link: string
-  isLast?: boolean
+export interface ArchiveProps {
+  title: string;
+  link: string;
+  isLast?: boolean;
 }
 
-export default function ArchiveItem({ title, link, isLast }: Props) {
+export default function ArchiveItem({ title, link, isLast }: ArchiveProps) {
   return (
-    <div className={`border-t border-secondary ${isLast ? 'border-b' : ''}`}>
+    <div className={`border-t border-secondary ${isLast ? "border-b" : ""}`}>
       <a
         className="py-[10px] tablet:px-[20px] flex gap-[5px] justify-center items-center tablet:hover:bg-secondary tablet:hover:text-primary transition-all duration-300 cursor-pointer"
         href={link}
@@ -22,5 +22,5 @@ export default function ArchiveItem({ title, link, isLast }: Props) {
         </p>
       </a>
     </div>
-  )
+  );
 }

@@ -1,41 +1,62 @@
-"use client";
+'use client'
 
-import MobileNavbar from "@/components/layout/navbar/MobileNavbar";
-import NavLinks from "@/components/layout/navbar/NavLinks";
-import useScrollDirection from "@/utils/useScrollDirection";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import MobileNavbar from '@/components/layout/navbar/MobileNavbar'
+import NavLinks from '@/components/layout/navbar/NavLinks'
+import useScrollDirection from '@/utils/useScrollDirection'
+import Image from 'next/image'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
-const logo = "/assets/images/logo/logo_no_border.svg";
+const logo = '/assets/images/logo/logo_no_border.svg'
 
 interface NavbarProps {
-  fixed?: boolean;
+  fixed?: boolean
+  open?: boolean
+  setOpen?: (value: boolean) => void
 }
 
-export default function Navbar({ fixed = true }: NavbarProps) {
-  const [open, setOpen] = useState(false);
-  const toggleMenu = () => setOpen((prev) => !prev);
-  const [show, setShow] = useState(true);
-  const scrollDirection = useScrollDirection();
-  const pathname = usePathname();
+export default function Navbar({ fixed = true, open: controlledOpen, setOpen }: NavbarProps) {
+  const [internalOpen, setInternalOpen] = useState(false)
+  const open = controlledOpen ?? internalOpen
+  const toggleMenu = () => (setOpen ? setOpen(!open) : setInternalOpen((prev) => !prev))
+  const [show, setShow] = useState(true)
+  const scrollDirection = useScrollDirection()
+  const pathname = usePathname()
 
   useEffect(() => {
-    if (scrollDirection === "down") {
-      setShow(false);
-    } else if (scrollDirection === "up") {
-      setShow(true);
+    if (!open) {
+      if (scrollDirection === 'down') {
+        setShow(false)
+      } else if (scrollDirection === 'up') {
+        setShow(true)
+      }
     }
-  }, [scrollDirection]);
+  }, [scrollDirection, open])
 
   useEffect(() => {
-    if (pathname !== "/") setShow(true);
-  }, [pathname]);
+    if (open) {
+      setShow(true)
+    }
+  }, [open])
+
+  useEffect(() => {
+    if (pathname !== '/') setShow(true)
+  }, [pathname])
+
+  useEffect(() => {
+    if (open) {
+      if (setOpen) {
+        setOpen(false)
+      } else {
+        setInternalOpen(false)
+      }
+    }
+  }, [open, pathname, setOpen])
 
   return (
     <header
-      className={`w-full z-50 ${fixed ? "fixed" : "relative"} ${show ? "top-0" : "-top-28"} left-0 bg-white transition-all duration-300 ease-in-out`}
+      className={`w-full z-50 ${fixed ? 'fixed' : 'relative'} ${show ? 'top-0' : '-top-28'} left-0 bg-white transition-all duration-300 ease-in-out`}
     >
       <div className="border-b border-black px-[20px] py-[15px] tablet:py-[14px] bg-white">
         <div className="flex justify-between items-center">
@@ -55,7 +76,7 @@ export default function Navbar({ fixed = true }: NavbarProps) {
           <div className="tablet:hidden">
             <button
               onClick={toggleMenu}
-              className={`flex flex-col gap-[6px] transition-transform duration-300 ${open ? "rotate-90" : ""} focus:outline-none`}
+              className={`flex flex-col gap-[6px] transition-transform duration-300 ${open ? 'rotate-90' : ''} focus:outline-none`}
               aria-label="Toggle menu"
             >
               <span className="w-[28px] h-[3px] bg-black" />
@@ -65,7 +86,7 @@ export default function Navbar({ fixed = true }: NavbarProps) {
         </div>
       </div>
 
-      {open && <MobileNavbar onClose={() => setOpen(false)} />}
+      {open && <MobileNavbar onClose={() => setOpen?.(false)} />}
     </header>
-  );
+  )
 }

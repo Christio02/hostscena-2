@@ -29,8 +29,11 @@ export default function Marquee({ text, className }: Props) {
   }, [text])
 
   return (
-    <div ref={containerRef} className={`relative overflow-hidden whitespace-nowrap ${className}`}>
-      <div ref={textRef} className={`inline-block ${shouldScroll ? 'animate-marquee' : ''}`}>
+    <div ref={containerRef} className="relative overflow-hidden whitespace-nowrap">
+      <div
+        ref={textRef}
+        className={`inline-block ${shouldScroll ? 'animate-marquee' : ''} ${className}`}
+      >
         {text}
       </div>
     </div>

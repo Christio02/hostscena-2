@@ -12,6 +12,7 @@ export default function HomeMobileNavbar() {
   const [triggerPassed, setTriggerPassed] = useState(false)
   const triggerRef = useRef<HTMLDivElement>(null)
   const scrollDirection = useScrollDirection()
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -30,9 +31,13 @@ export default function HomeMobileNavbar() {
   }, [])
 
   useEffect(() => {
+    if (menuOpen) {
+      setShowNavbar(true)
+      return
+    }
     const scrolledEnough = window.scrollY > 100
     setShowNavbar(scrollDirection === 'up' && triggerPassed && scrolledEnough)
-  }, [scrollDirection, triggerPassed])
+  }, [scrollDirection, triggerPassed, menuOpen])
 
   return (
     <>
@@ -45,7 +50,7 @@ export default function HomeMobileNavbar() {
               <Link
                 key={href}
                 href={href}
-                className="w-full text-center border border-secondary text-button hover:bg-secondary hover:text-primary"
+                className="w-full text-center border-[1px] border-secondary text-button hover:bg-secondary hover:text-primary"
               >
                 {label}
               </Link>
@@ -70,7 +75,7 @@ export default function HomeMobileNavbar() {
               zIndex: 50,
             }}
           >
-            <Navbar fixed={false} />
+            <Navbar fixed={false} open={menuOpen} setOpen={setMenuOpen} />
           </motion.div>
         )}
       </AnimatePresence>

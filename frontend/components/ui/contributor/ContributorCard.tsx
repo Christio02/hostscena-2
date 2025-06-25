@@ -9,33 +9,28 @@ import Marquee from '@/components/ui/marquee/Marquee'
 
 interface Props {
   person: Person
-  isIntern?: boolean
   showTopBorder?: boolean
 }
 
-export default function PersonCard({ person, isIntern = false, showTopBorder = true }: Props) {
+export default function ContributorCard({ person, showTopBorder = true }: Props) {
   const { name, image, email, phone, jobTitle, description } = person
   const [modalIsOpen, setModalIsOpen] = useState(false)
 
-  const truncated = description?.split('\n').slice(0, 2).join(' ').slice(0, 100) + '...'
-
   return (
     <>
-      <div className="w-full hidden phone:block min-h-[410px]">
-        <div className={`relative w-full ${isIntern ? 'h-[308px]' : 'h-[400px]'}`}>
+      <div className="w-full max-w-[400px] min-w-[300px] hidden phone:block">
+        <div className="relative w-full h-[400px]">
           <Image src={image} alt={name} fill className="object-cover" />
         </div>
         <div className="px-[10px] py-[10px] flex flex-col justify-center border border-secondary border-t-0">
           <p className="font-bold">{name}</p>
-          {!isIntern && jobTitle && <Marquee className="italic font-light" text={jobTitle} />}
-          {isIntern && description && <p className="italic font-light line-clamp-2">{truncated}</p>}
+          {jobTitle && <Marquee className="italic font-light" text={jobTitle} />}
           <button onClick={() => setModalIsOpen(true)} className="underline pt-[10px] text-left">
             Les mer
           </button>
         </div>
       </div>
 
-      {/* Mobile */}
       <div
         className={`flex phone:hidden w-full py-[10px] max-w-full min-h-[125px] ${
           showTopBorder ? 'border-t border-secondary' : ''

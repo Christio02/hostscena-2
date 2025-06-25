@@ -22,7 +22,7 @@ export default function DayCard({ event }: Props) {
           <div className="py-[5px]">
             <p className="text-caption">{performer}</p>
             <p className="text-caption">
-              {startTime} - {endTime}
+              {startTime} {endTime ? `- ${endTime}` : ''}
             </p>
             <p className="text-caption">{location}</p>
           </div>

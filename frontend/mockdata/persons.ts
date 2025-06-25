@@ -7,6 +7,8 @@ export const team: Person[] = [
     email: 'siri@hostscena.no',
     phone: '930 89 940',
     jobTitle: 'Daglig leder med kunstnerisk ansvar',
+    description:
+      'Er fra Fræna, bosatt i Volda, svært ettertrakta folkemusiker og komponist/arrangor med norsk folkemusikk som hovedfelt og hardingfele og fele som hovedinstrument. Hun er kjent fra flere plateutgivelser med folkemusikk.',
   },
   {
     name: 'Miriam Jacobsen Sollie',
@@ -14,6 +16,8 @@ export const team: Person[] = [
     email: 'miriam@hostscena.no',
     phone: '98674382',
     jobTitle: 'Festivalprodusent',
+    description:
+      'Er fra Fræna, bosatt i Volda, svært ettertrakta folkemusiker og komponist/arrangor med norsk folkemusikk som hovedfelt og hardingfele og fele som hovedinstrument. Hun er kjent fra flere plateutgivelser med folkemusikk.',
   },
   {
     name: 'Per Oskar Pedersen',
@@ -21,12 +25,16 @@ export const team: Person[] = [
     email: 'per.oskar@konsertsystemer.no',
     phone: '92053316',
     jobTitle: 'Teknisk produsent',
+    description:
+      'Er fra Fræna, bosatt i Volda, svært ettertrakta folkemusiker og komponist/arrangor med norsk folkemusikk som hovedfelt og hardingfele og fele som hovedinstrument. Hun er kjent fra flere plateutgivelser med folkemusikk.',
   },
   {
     name: 'Per Oskar Mark Pedersen',
     image: '/assets/images/personsMock/miriam2.png',
     jobTitle: 'Regnskapskonsulent',
     email: 'bra@regnskap.no',
+    description:
+      'Er fra Fræna, bosatt i Volda, svært ettertrakta folkemusiker og komponist/arrangor med norsk folkemusikk som hovedfelt og hardingfele og fele som hovedinstrument. Hun er kjent fra flere plateutgivelser med folkemusikk.',
   },
 ]
 
@@ -37,6 +45,8 @@ export const praktikanter: Person[] = [
     phone: '930 89 940',
     email: 'siri@hostscena.no',
     jobTitle: 'Daglig leder med kunstnerisk ansvar',
+    description:
+      'Er fra Fræna, bosatt i Volda, svært ettertrakta folkemusiker og komponist/arrangor med norsk folkemusikk som hovedfelt og hardingfele og fele som hovedinstrument. Hun er kjent fra flere plateutgivelser med folkemusikk.',
   },
   {
     name: 'Hanna Petrechenko',
@@ -44,6 +54,8 @@ export const praktikanter: Person[] = [
     phone: '98674382',
     email: 'miriam@hostscena.no',
     jobTitle: 'Festivalprodusent',
+    description:
+      'Er fra Fræna, bosatt i Volda, svært ettertrakta folkemusiker og komponist/arrangor med norsk folkemusikk som hovedfelt og hardingfele og fele som hovedinstrument. Hun er kjent fra flere plateutgivelser med folkemusikk.',
   },
   {
     name: 'Jeanett Helen Lillevold',
@@ -51,12 +63,16 @@ export const praktikanter: Person[] = [
     phone: '92053316',
     email: 'per.oskar@konsertsystemer.no',
     jobTitle: 'Teknisk produsent',
+    description:
+      'Er fra Fræna, bosatt i Volda, svært ettertrakta folkemusiker og komponist/arrangor med norsk folkemusikk som hovedfelt og hardingfele og fele som hovedinstrument. Hun er kjent fra flere plateutgivelser med folkemusikk.',
   },
   {
     name: 'Matilde Furholm',
     image: '/assets/images/personsMock/matilde.png',
     jobTitle: 'Regnskapskonsulent',
     email: 'bra@regnskap.no',
+    description:
+      'Er fra Fræna, bosatt i Volda, svært ettertrakta folkemusiker og komponist/arrangor med norsk folkemusikk som hovedfelt og hardingfele og fele som hovedinstrument. Hun er kjent fra flere plateutgivelser med folkemusikk.',
   },
   {
     name: 'Jo Berntsen',
@@ -64,11 +80,15 @@ export const praktikanter: Person[] = [
     phone: '92053316',
     email: 'per.oskar@konsertsystemer.no',
     jobTitle: 'Teknisk produsent',
+    description:
+      'Er fra Fræna, bosatt i Volda, svært ettertrakta folkemusiker og komponist/arrangor med norsk folkemusikk som hovedfelt og hardingfele og fele som hovedinstrument. Hun er kjent fra flere plateutgivelser med folkemusikk.',
   },
   {
     name: 'Brage Eikanger Hagen',
     image: '/assets/images/personsMock/brage.png',
     jobTitle: 'Regnskapskonsulent',
     email: 'bra@regnskap.no',
+    description:
+      'Er fra Fræna, bosatt i Volda, svært ettertrakta folkemusiker og komponist/arrangor med norsk folkemusikk som hovedfelt og hardingfele og fele som hovedinstrument. Hun er kjent fra flere plateutgivelser med folkemusikk.',
   },
 ]

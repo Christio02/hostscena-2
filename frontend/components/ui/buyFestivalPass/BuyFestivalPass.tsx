@@ -1,41 +1,42 @@
-import Image from 'next/image'
-import React from 'react'
+import { CustomPortableText } from "@/components/shared/CustomPortableText";
+import { getBackgroundVideo } from "@/lib/sanity-cache";
+import { PortableTextBlock } from "@portabletext/types";
+import { ReactNode } from "react";
+
 interface BackgroundBoxesProps {
-  imageSrc: string
-  className?: string
-  button: React.ReactNode
-  content?: React.ReactNode
+  className?: string;
+  button: ReactNode;
+  content?: PortableTextBlock[];
 }
 
-export default function BuyFestivalPass({
-  imageSrc,
-  className = '',
+export default async function BuyFestivalPass({
   button,
   content,
 }: BackgroundBoxesProps) {
+  const videoData = await getBackgroundVideo();
+  const videoUrl = videoData?.asset?.url;
   return (
-    <div className={`${className}`}>
-      {/* Background Image with button and tablet content */}
-      <div
-        className={`relative flex items-center justify-center w-full ${className}`}
-        style={{ height: 'inherit' }}
-      >
-        <Image
-          src={imageSrc}
-          alt="Background"
-          fill
-          className="object-cover object-top -z-10"
-          priority
-        />
-        <div className="flex flex-col items-center tablet:gap-[60px] z-10">
-          <div>{button}</div>
-          {/* Only show on tablet+ */}
-          {content && <div className="hidden tablet:block">{content}</div>}
+    <section>
+      <div className="relative w-full h-[50vh] overflow-hidden">
+        {videoUrl && (
+          <video
+            className="top-0 left-0 w-full h-full max-w-none object-cover z-0"
+            src={videoUrl}
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        )}
+        <div className="absolute inset-0 flex items-center justify-center will-change-transform z-10">
+          {button}
         </div>
       </div>
-
-      {/* Only show on mobile */}
-      {content && <div className="block border-0 tablet:hidden py-[10px]">{content}</div>}
-    </div>
-  )
+      <div className="py-[40px] flex items-center justify-center w-full">
+        <div className="max-w-[650px] px-[20px] tablet:px-0">
+          {content && <CustomPortableText value={content} />}
+        </div>
+      </div>
+    </section>
+  );
 }

@@ -10,7 +10,7 @@ type Props = {
 
 export default function BlackTitleBar({ title, linkText, linkUrl, hideLinkOnMobile }: Props) {
   return (
-    <div className="bg-secondary py-[40px] tablet:py-[30px] px-[20px] text-primary flex justify-between items-center">
+    <div className="bg-secondary py-[20px] tablet:py-[40px] px-[20px] text-primary flex justify-between items-center">
       <h2 className="text-h2">{title}</h2>
       {linkText && linkUrl && (
         <Link

@@ -15,5 +15,5 @@ export default function LayoutPadding() {
 
   const isHome = pathname === '/'
 
-  return <div className={isHome ? '' : 'pt-[71px] tablet:pt-[79px]'} />
+  return <div className={isHome ? '' : 'pt-[71px] tablet:pt-[79px] bg-secondary'} />
 }

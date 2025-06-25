@@ -4,4 +4,5 @@ export default interface Person {
   email?: string
   phone?: string
   jobTitle?: string
+  description?: string
 }

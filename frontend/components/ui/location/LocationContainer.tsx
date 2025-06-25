@@ -23,7 +23,7 @@ export default function LocationContainer() {
       speed={8000}
     >
       {locations.map((loc) => (
-        <SwiperSlide key={loc.name} style={{ width: '172px' }}>
+        <SwiperSlide key={loc.name} style={{ width: '220px' }}>
           <LocationCard location={loc} />
         </SwiperSlide>
       ))}

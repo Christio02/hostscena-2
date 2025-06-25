@@ -1,4 +1,4 @@
-import { defineQuery } from 'next-sanity'
+import { defineQuery } from "next-sanity";
 //  single contact info document
 export const SINGLE_CONTACT_FOOTER_QUERY = defineQuery(`
   *[_type == "contactFooter" && !(_id in path("drafts.**"))][0] {
@@ -13,7 +13,7 @@ export const SINGLE_CONTACT_FOOTER_QUERY = defineQuery(`
       someUrl
     }
   } 
-`)
+`);
 
 // query for social links only
 export const SOCIAL_LINKS = defineQuery(`
@@ -22,4 +22,4 @@ export const SOCIAL_LINKS = defineQuery(`
       platform,
       someUrl
   }
-`)
+`);

@@ -48,7 +48,7 @@ export default function HomeNavbar() {
         {/* NavLinks */}
         <div
           className={`absolute top-1/2 -translate-y-1/2 transition-all ease-in-out duration-500 ${
-            isFixed ? 'left-[calc(100%-628px)]' : 'left-0'
+            isFixed ? 'left-[calc(100%-740px)]' : 'left-0'
           }`}
         >
           <NavLinks />
