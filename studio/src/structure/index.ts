@@ -1,75 +1,79 @@
 import {StructureResolver} from 'sanity/structure'
-import {HomeIcon, CalendarIcon, BookmarkIcon, TargetIcon, TrolleyIcon, UsersIcon, ArchiveIcon, UserIcon} from '@sanity/icons'
+import {
+    HomeIcon,
+    CalendarIcon,
+    BookmarkIcon,
+    TargetIcon,
+    TrolleyIcon,
+    UsersIcon,
+    ArchiveIcon,
+    UserIcon,
+} from '@sanity/icons'
+
+const singletonTypes = ['home', 'map', 'contactFooter', 'contactPersons']
 
 export const structure: StructureResolver = (S) =>
     S.list()
-        .title('Content')
+        .title('Innhold')
         .items([
             S.listItem()
-                .title('Home Page')
+                .title('Hjemmesider')
                 .icon(HomeIcon)
-                .child(
-                    S.editor()
-                        .id('home')
-                        .schemaType('home')
-                        .documentId('home')
-                ),
+                .schemaType('home')
+                .child(S.documentTypeList('home').title('Alle hjemmesider')),
 
             S.divider(),
 
             S.listItem()
-                .title('News')
+                .title('Nyheter')
                 .icon(BookmarkIcon)
-                .schemaType('news')
-                .child(S.documentTypeList('news').title('News Articles')),
+                .child(S.documentTypeList('news').title('Nyhetsartikler')),
 
             S.listItem()
-                .title('Events')
+                .title('Arrangementer')
                 .icon(CalendarIcon)
-                .schemaType('event')
-                .child(S.documentTypeList('event').title('Events')),
+                .child(S.documentTypeList('event').title('Arrangementer')),
 
             S.listItem()
-                .title('Tickets')
+                .title('Billettsiden')
                 .icon(TrolleyIcon)
-                .schemaType('tickets')
-                .child(S.documentTypeList('tickets').title('Tickets')),
+                .child(S.documentTypeList('tickets').title('Billetter')),
 
             S.divider(),
 
             S.listItem()
-                .title('Contact Persons')
+                .title('Kontaktpersoner')
                 .icon(UsersIcon)
-                .schemaType('contactPersons')
-                .child(S.documentTypeList('contactPersons').title('Contacts')),
+                .child(S.editor().id('contactPersons').schemaType('contactPersons').documentId('contactPersons')),
 
             S.listItem()
-                .title('Contact Footer')
+                .title('Footer-kontaktinfo')
                 .icon(UserIcon)
-                .schemaType('contactFooter')
                 .child(S.editor().id('contactFooter').schemaType('contactFooter').documentId('contactFooter')),
 
             S.divider(),
 
             S.listItem()
-                .title('Map')
+                .title('Kart')
                 .icon(TargetIcon)
-                .schemaType('map')
                 .child(S.editor().id('map').schemaType('map').documentId('map')),
 
             S.listItem()
-                .title('Archive')
+                .title('Arkiv')
                 .icon(ArchiveIcon)
-                .schemaType('archive')
-                .child(S.documentTypeList('archive').title('Archive')),
+                .child(S.documentTypeList('archive').title('Arkivsider')),
 
+            S.divider(),
 
             S.listItem()
-                .title('All Documents')
+                .title('Alle dokumenter')
                 .child(
                     S.list()
-                        .title('All Documents')
-                        .items(S.documentTypeListItems())
-                )
-
+                        .title('Alle dokumenttyper')
+                        .items(
+                            S.documentTypeListItems().filter(
+                                (listItem) => !singletonTypes.includes(listItem.getId()!)
+                            )
+                        )
+                ),
         ])
